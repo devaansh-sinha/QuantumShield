@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A live technical trace of QuantumShield's ML-KEM-768 and AES-256-GCM post-quantum encryption flow." />
+    <title>QuantumShield | Protocol Inspector</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="brand" href="index.html" aria-label="QuantumShield home"><span class="brand-mark">Q</span><span>Quantum<span>Shield</span></span></a>
+        <a class="nav-link" href="solution.html">← Quantum-safe solution</a>
+      </nav>
+
+      <section class="page-hero inspector-hero">
+        <p class="eyebrow"><span></span> Protocol inspector · behind the scenes</p>
+        <h1>See the <em>real protocol</em><br />as it runs.</h1>
+        <p class="hero-copy">Generate a fresh ML-KEM-768 session and inspect every item that travels between Alice and Bob. Private keys and shared secrets remain hidden; the inspector shows safe SHA-256 fingerprints instead.</p>
+      </section>
+
+      <section class="inspector-runner" aria-labelledby="runner-title">
+        <div class="inspector-runner-head">
+          <div>
+            <p class="step-label">LIVE CRYPTOGRAPHIC TRACE</p>
+            <h2 id="runner-title">Generate a quantum-safe session</h2>
+          </div>
+          <span class="real-tag">LOCAL · FRESH KEYS EACH RUN</span>
+        </div>
+        <div class="inspector-input-row">
+          <label for="inspectorMessage">Data Alice sends after key establishment</label>
+          <div>
+            <input id="inspectorMessage" type="text" maxlength="120" value="Financial report: confidential" autocomplete="off" />
+            <button id="runInspectorButton" type="button">Generate protocol trace <span>→</span></button>
+          </div>
+        </div>
+        <p class="inspector-error" id="inspectorError" role="alert"></p>
+
+        <div class="protocol-layout" aria-live="polite">
+          <article class="party-card" id="aliceCard">
+            <div class="party-heading"><span class="party-avatar">A</span><div><p>Alice · receiver</p><h3>Private key zone</h3></div></div>
+            <dl>
+              <div><dt>ML-KEM public key</dt><dd id="alicePublicKey">Waiting</dd></div>
+              <div><dt>ML-KEM secret key</dt><dd class="private-value" id="aliceSecretKey">Never transmitted</dd></div>
+              <div><dt>Recovered secret fingerprint</dt><dd id="aliceSecretFingerprint">Waiting</dd></div>
+            </dl>
+          </article>
+
+          <section class="channel-card" id="channelCard" aria-label="Public channel">
+            <div class="channel-heading"><span>PUBLIC CHANNEL</span><small>Visible to an attacker</small></div>
+            <div class="packet" id="publicKeyPacket"><span>01</span><div><strong>Alice → Bob</strong><p>ML-KEM public key</p><code id="publicKeyPacketValue">Waiting</code></div></div>
+            <div class="packet" id="kemPacket"><span>02</span><div><strong>Bob → Alice</strong><p>ML-KEM ciphertext</p><code id="kemPacketValue">Waiting</code></div></div>
+            <div class="packet" id="dataPacket"><span>03</span><div><strong>Alice → Bob</strong><p>AES-GCM IV + encrypted payload</p><code id="dataPacketValue">Waiting</code></div></div>
+          </section>
+
+          <article class="party-card" id="bobCard">
+            <div class="party-heading"><span class="party-avatar bob-avatar">B</span><div><p>Bob · sender</p><h3>Private key zone</h3></div></div>
+            <dl>
+              <div><dt>Generated secret fingerprint</dt><dd id="bobSecretFingerprint">Waiting</dd></div>
+              <div><dt>Shared-secret match</dt><dd id="secretMatch">Waiting</dd></div>
+              <div><dt>Recovered payload</dt><dd id="payloadMatch">Waiting</dd></div>
+            </dl>
+          </article>
+        </div>
+
+        <div class="trace-list" aria-label="Protocol execution steps">
+          <article id="traceOne"><span>01</span><div><strong>ML-KEM key generation</strong><p id="traceOneText">Alice has not generated a key pair yet.</p></div></article>
+          <article id="traceTwo"><span>02</span><div><strong>Key encapsulation</strong><p id="traceTwoText">Bob has not established a secret yet.</p></div></article>
+          <article id="traceThree"><span>03</span><div><strong>Key decapsulation</strong><p id="traceThreeText">Alice has not recovered Bob’s secret yet.</p></div></article>
+          <article id="traceFour"><span>04</span><div><strong>AES-256-GCM payload encryption</strong><p id="traceFourText">The payload is waiting for a verified shared secret.</p></div></article>
+        </div>
+
+        <div class="trace-result" id="traceResult" hidden>
+          <span>✓</span>
+          <div><strong>Protocol result: success</strong><p id="traceResultText"></p></div>
+        </div>
+      </section>
+
+      <section class="attacker-inspector">
+        <div>
+          <p class="step-label">ATTACKER VIEW</p>
+          <h2>What an interceptor can and cannot obtain</h2>
+          <p>The public channel is not secret. Security comes from the fact that public values do not reveal the session key.</p>
+        </div>
+        <div class="attacker-grid">
+          <article class="can-see"><p>CAN OBSERVE</p><ul><li>ML-KEM public-key fingerprint</li><li>ML-KEM ciphertext fingerprint</li><li>AES-GCM IV and ciphertext</li></ul></article>
+          <article class="cannot-see"><p>CANNOT OBSERVE</p><ul><li>Alice’s ML-KEM secret key</li><li>Alice / Bob shared secret</li><li>AES-256 session key</li></ul></article>
+        </div>
+      </section>
+
+      <section class="comparison-section" aria-labelledby="comparison-title">
+        <p class="step-label">SECURITY COMPARISON</p>
+        <h2 id="comparison-title">Where the post-quantum advantage actually is</h2>
+        <p class="comparison-intro">There is no honest “10× safer” score. Properly implemented RSA/ECC is secure against current classical attacks; post-quantum cryptography changes the risk specifically when a cryptographically relevant quantum computer exists.</p>
+        <div class="comparison-table-wrap">
+          <table>
+            <thead><tr><th>Layer</th><th>Typical current design</th><th>QuantumShield design</th></tr></thead>
+            <tbody>
+              <tr><th>Key establishment</th><td>RSA or ECC</td><td>ML-KEM-768</td></tr>
+              <tr><th>Security basis</th><td>Integer factoring / discrete logarithms</td><td>Module Learning With Errors (lattice problem)</td></tr>
+              <tr><th>Against current computers</th><td><span class="status-good">Strong when correctly deployed</span></td><td><span class="status-good">Strong when correctly deployed</span></td></tr>
+              <tr><th>Against a future large quantum computer</th><td><span class="status-risk">Vulnerable to Shor’s algorithm</span></td><td><span class="status-quantum">Designed to resist known quantum attacks</span></td></tr>
+              <tr><th>Data encryption</th><td>AES-256-GCM can still be used</td><td>AES-256-GCM can still be used</td></tr>
+              <tr><th>Trade-off</th><td>Smaller public-key material</td><td>Larger keys/ciphertexts; no quantum hardware required</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <aside class="comparison-note"><span class="note-icon">i</span><p><strong>The key insight:</strong> ML-KEM does not make AES “more encrypted.” It replaces the quantum-vulnerable public-key layer used to establish the AES key. ML-KEM is standardised by NIST as FIPS 203. <a href="https://csrc.nist.gov/pubs/fips/203/final" target="_blank" rel="noreferrer">Read FIPS 203 →</a></p></aside>
+      </section>
+
+      <section class="final-cta"><p class="step-label">QUANTUMSHIELD</p><h2>From visual learning to a real cryptographic trace.</h2><a class="threat-button" href="solution.html">Return to quantum-safe solution <span>→</span></a></section>
+    </main>
+    <footer><span>QuantumShield</span><span>Educational protocol inspector · Not a complete production protocol</span></footer>
+    <script src="vendor/ml-kem.classic.js"></script>
+    <script src="inspector.js"></script>
+  </body>
+</html>

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Practical quantum-safe security guidance from QuantumShield." />
+    <title>QuantumShield | Quantum-Safe Solution</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="brand" href="index.html" aria-label="QuantumShield home"><span class="brand-mark">Q</span><span>Quantum<span>Shield</span></span></a>
+        <a class="nav-link" href="threat.html">← Quantum threat</a>
+      </nav>
+
+      <section class="page-hero solution-hero">
+        <p class="eyebrow"><span></span> Phase 03 · Quantum-safe response</p>
+        <h1>Protect the <em>key layer,</em><br />not just the message.</h1>
+        <p class="hero-copy">The practical answer is not to invent “quantum encryption” from scratch. It is to adopt post-quantum cryptography, migrate carefully, and use specialist quantum hardware only where it makes sense.</p>
+      </section>
+
+      <section class="solution-grid" aria-label="Quantum-safe options">
+        <article class="solution-card solution-primary">
+          <p class="solution-number">01</p>
+          <h2>Post-quantum cryptography</h2>
+          <p class="solution-lede">The scalable software-first option.</p>
+          <p>Use standardised algorithms such as ML-KEM to establish keys in a way designed to resist known quantum attacks. This can be adopted in applications, servers, and protocols without laying quantum fibre.</p>
+          <span class="recommended">RECOMMENDED FIRST STEP</span>
+        </article>
+        <article class="solution-card">
+          <p class="solution-number">02</p>
+          <h2>Hybrid migration</h2>
+          <p class="solution-lede">Protect now while upgrading safely.</p>
+          <p>Use current cryptography and post-quantum cryptography together during the transition. First inventory where RSA/ECC are used, then update the most sensitive, long-lived data.</p>
+          <span class="recommended muted-recommendation">PRACTICAL FOR MOST ORGANISATIONS</span>
+        </article>
+        <article class="solution-card">
+          <p class="solution-number">03</p>
+          <h2>Quantum key distribution</h2>
+          <p class="solution-lede">A specialised hardware option.</p>
+          <p>QKD uses quantum states to detect eavesdropping during key exchange. It can be valuable for dedicated critical links, but requires specialised infrastructure and is not the default solution for every organisation.</p>
+          <span class="recommended muted-recommendation">SELECTIVE HIGH-SECURITY USE</span>
+        </article>
+      </section>
+
+      <section class="pqc-demo" aria-labelledby="pqc-demo-title">
+        <div class="pqc-demo-head">
+          <div>
+            <p class="step-label">LIVE POST-QUANTUM DEMO</p>
+            <h2 id="pqc-demo-title">Encrypt with ML-KEM-768 + AES-256-GCM</h2>
+            <p>This is real post-quantum key establishment followed by real authenticated data encryption—performed locally in your browser.</p>
+          </div>
+          <span class="real-tag">REAL CRYPTOGRAPHIC OPERATIONS</span>
+        </div>
+
+        <div class="pqc-input-row">
+          <label for="pqcMessage">Message Alice wants to protect</label>
+          <div>
+            <input id="pqcMessage" type="text" maxlength="100" value="Patient record: confidential" autocomplete="off" />
+            <button id="pqcEncryptButton" type="button">Run quantum-safe encryption <span>→</span></button>
+          </div>
+        </div>
+
+        <div class="pqc-steps" aria-live="polite">
+          <article id="pqcStepOne"><span>01</span><div><strong>Alice creates ML-KEM-768 keys</strong><p id="pqcKeyStatus">Waiting to generate a post-quantum key pair.</p></div></article>
+          <article id="pqcStepTwo"><span>02</span><div><strong>Bob establishes a shared secret</strong><p id="pqcKemStatus">Waiting for encapsulation.</p></div></article>
+          <article id="pqcStepThree"><span>03</span><div><strong>Shared secret becomes an AES-256 key</strong><p id="pqcSecretStatus">Waiting for Alice to verify the secret.</p></div></article>
+          <article id="pqcStepFour"><span>04</span><div><strong>Message becomes authenticated ciphertext</strong><p id="pqcCipherStatus">Waiting for encryption.</p></div></article>
+        </div>
+
+        <div class="pqc-cipher-panel" id="pqcCipherPanel" hidden>
+          <p class="result-label">AES-256-GCM CIPHERTEXT</p>
+          <p class="pqc-ciphertext" id="pqcCiphertext"></p>
+          <button id="pqcDecryptButton" type="button" disabled>Decrypt as Alice <span>→</span></button>
+          <p class="pqc-decrypted" id="pqcDecrypted"></p>
+        </div>
+
+        <section class="pqc-file-workbench" aria-labelledby="pqc-file-title">
+          <div class="pqc-file-head">
+            <div>
+              <p class="step-label">SENDER → RECIPIENT FILE PROTECTION</p>
+              <h3 id="pqc-file-title">Send an encrypted file to a real recipient</h3>
+              <p>The recipient creates a key pair once. The sender uses only the recipient’s public key to make a package; only the matching private recovery key can open it. ML-KEM-768 establishes a one-time secret and AES-256-GCM encrypts the file itself.</p>
+            </div>
+            <span class="local-tag">FILE NEVER LEAVES THIS BROWSER</span>
+          </div>
+
+          <div class="pqc-file-grid">
+            <article class="pqc-file-card">
+              <p class="file-card-label">01 · RECIPIENT SETUP</p>
+              <h4>Recipient creates their keys</h4>
+              <label for="pqcRecipientName">Recipient name</label>
+              <input id="pqcRecipientName" type="text" maxlength="40" value="Bob" autocomplete="off" />
+              <button id="pqcGenerateRecipientKeysButton" type="button">Create recipient key set <span>→</span></button>
+              <p class="file-selection" id="pqcRecipientKeyStatus">Create a public <code>.qpk</code> key to share and a private <code>.qsk</code> key to keep.</p>
+              <div class="key-downloads" id="pqcRecipientKeyDownloads" hidden>
+                <button id="pqcDownloadPublicKeyButton" type="button">Download public key (.qpk)</button>
+                <button id="pqcDownloadPrivateKeyButton" type="button">Download private recovery key (.qsk)</button>
+              </div>
+            </article>
+
+            <article class="pqc-file-card">
+              <p class="file-card-label">02 · SENDER ENCRYPTS</p>
+              <h4>Create a protected package</h4>
+              <label for="pqcRecipientPublicKeyInput">Recipient public key (.qpk)</label>
+              <input id="pqcRecipientPublicKeyInput" type="file" accept=".qpk,application/json" />
+              <p class="file-selection" id="pqcRecipientPublicKeyStatus">Upload the recipient’s public key, or create one in step 01 for this local demo.</p>
+              <label for="pqcFileInput">Choose a file (up to 10 MB in this prototype)</label>
+              <input id="pqcFileInput" type="file" />
+              <p class="file-selection" id="pqcFileSelection">No file selected yet.</p>
+              <button id="pqcFileEncryptButton" type="button" disabled>Encrypt for recipient <span>→</span></button>
+            </article>
+
+            <article class="pqc-file-card">
+              <p class="file-card-label">03 · RECIPIENT DECRYPTS</p>
+              <h4>Recover the original file</h4>
+              <label for="pqcEncryptedPackageInput">Upload encrypted package (.qshield)</label>
+              <input id="pqcEncryptedPackageInput" type="file" accept=".qshield,application/json" />
+              <label for="pqcRecoveryKeyInput">Upload matching recovery key (.qsk)</label>
+              <input id="pqcRecoveryKeyInput" type="file" accept=".qsk,application/json" />
+              <button id="pqcFileDecryptButton" type="button" disabled>Decrypt &amp; download original <span>→</span></button>
+            </article>
+          </div>
+
+          <div class="pqc-file-result" id="pqcFileResult" hidden aria-live="polite">
+            <p class="result-label">FILE PACKAGE READY</p>
+            <p id="pqcFileStatus"></p>
+            <div class="pqc-file-downloads" id="pqcFileDownloads" hidden>
+              <button id="pqcDownloadPackageButton" type="button">Download encrypted package (.qshield)</button>
+            </div>
+          </div>
+
+          <section class="pqc-file-inspection" id="pqcFileInspection" hidden aria-labelledby="pqc-file-inspection-title">
+            <div>
+              <p class="result-label">PACKAGE INSPECTION</p>
+              <h4 id="pqc-file-inspection-title">What travels with the encrypted file</h4>
+              <p>These fields may be shared with the package. The private recovery key and the one-time AES key are never included.</p>
+            </div>
+            <dl>
+              <div><dt>Recipient</dt><dd id="pqcFilePacketRecipient">—</dd></div>
+              <div><dt>ML-KEM ciphertext</dt><dd id="pqcFilePacketKem">—</dd></div>
+              <div><dt>AES-GCM IV</dt><dd id="pqcFilePacketIv">—</dd></div>
+              <div><dt>Protected file payload</dt><dd id="pqcFilePacketCiphertext">—</dd></div>
+            </dl>
+          </section>
+
+          <section class="pqc-tamper-lab" aria-labelledby="pqc-tamper-title">
+            <div>
+              <p class="result-label">INTEGRITY TEST</p>
+              <h4 id="pqc-tamper-title">What if an attacker alters the package?</h4>
+              <p>After encrypting for a recipient created in this browser tab, flip one byte of the protected file payload and try to decrypt it. AES-GCM should reject the altered data.</p>
+            </div>
+            <div class="tamper-action">
+              <button id="pqcTamperButton" type="button" disabled>Simulate one-byte tamper test <span>→</span></button>
+              <p id="pqcTamperStatus">Create recipient keys and encrypt a file to enable this local test.</p>
+              <button id="pqcDownloadTamperedButton" class="download-tampered" type="button" hidden disabled>Download altered package (.qshield)</button>
+            </div>
+          </section>
+
+          <section class="pqc-attack-comparison" aria-labelledby="pqc-attack-title">
+            <p class="step-label">SAFE ATTACK MODEL</p>
+            <h4 id="pqc-attack-title">What does the classical-versus-quantum comparison actually show?</h4>
+            <div class="attack-comparison-grid">
+              <article><span>CLASSICAL</span><strong>Old RSA factoring</strong><p>A properly sized RSA key is designed to make classical factor search impractical.</p></article>
+              <article><span>QUANTUM THREAT</span><strong>Shor targets RSA/ECC</strong><p>A future fault-tolerant quantum computer could use Shor’s algorithm against the public-key systems used for exchange and signatures.</p></article>
+              <article><span>THIS PACKAGE</span><strong>ML-KEM + AES-GCM</strong><p>This file flow replaces the vulnerable RSA-style exchange with ML-KEM-768. It does not claim a quantum computer can break ML-KEM or AES today.</p></article>
+            </div>
+            <a class="attack-lab-link" href="threat.html#simulator">Run the safe toy RSA / Shor concept simulation <span>→</span></a>
+          </section>
+
+          <aside class="pqc-file-warning"><span class="note-icon">!</span><p><strong>Share the public key; protect the private key.</strong> A <code>.qpk</code> file is intended for senders. A matching <code>.qsk</code> recovery key must stay with its recipient—anyone who gets it can decrypt matching packages. This browser-only prototype has no identity verification, backups, or server-side key management.</p></aside>
+        </section>
+
+        <aside class="pqc-accuracy"><span class="note-icon">i</span><p><strong>What this is—and is not:</strong> ML-KEM is the NIST FIPS 203 post-quantum key-establishment standard. This demo really generates keys, establishes a shared secret, and encrypts the message locally. It does not implement identity authentication, server-side key storage, or a complete production messaging protocol.</p></aside>
+
+        <a class="channel-link" href="channel.html">Launch the working secure channel <span>→</span></a>
+        <a class="channel-link" href="defence.html">Open DefenceGuard working command-link lab <span>→</span></a>
+        <a class="inspector-link" href="inspector.html">Open the technical protocol inspector <span>→</span></a>
+      </section>
+
+      <section class="roadmap">
+        <p class="step-label">AFFORDABLE ROADMAP</p>
+        <h2>How an organisation can start</h2>
+        <ol>
+          <li><span>01</span><p><strong>Find vulnerable systems.</strong> Create an inventory of where RSA and ECC are used.</p></li>
+          <li><span>02</span><p><strong>Prioritise long-life data.</strong> Protect records that must remain confidential for many years.</p></li>
+          <li><span>03</span><p><strong>Test PQC in hybrid mode.</strong> Start with software upgrades before expensive hardware.</p></li>
+          <li><span>04</span><p><strong>Use QKD selectively.</strong> Reserve it for critical point-to-point links where the cost is justified.</p></li>
+        </ol>
+      </section>
+
+      <aside class="learning-note solution-reference"><span class="note-icon">i</span><p><strong>Why this is real:</strong> NIST has published post-quantum cryptography standards, including ML-KEM. QuantumShield helps non-experts understand why the migration matters and which path is practical for them. <a href="https://csrc.nist.gov/Projects/Post-Quantum-Cryptography" target="_blank" rel="noreferrer">Read NIST’s PQC project →</a></p></aside>
+
+      <section class="final-cta"><p class="step-label">QUANTUMSHIELD DEFENCEGUARD</p><h2>Awareness → threat → protected command links.</h2><a class="threat-button" href="defence.html">Open DefenceGuard command-link lab <span>→</span></a></section>
+    </main>
+    <footer><span>QuantumShield</span><span>Post-quantum readiness for everyone</span></footer>
+    <script src="vendor/ml-kem.classic.js"></script>
+    <script src="pqc.js"></script>
+    <script src="file-crypto.js"></script>
+  </body>
+</html>

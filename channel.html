@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A working local QuantumShield secure channel using ML-KEM-768 and AES-256-GCM." />
+    <title>QuantumShield | Secure Channel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="brand" href="index.html" aria-label="QuantumShield home"><span class="brand-mark">Q</span><span>Quantum<span>Shield</span></span></a>
+        <a class="nav-link" href="solution.html">← Quantum-safe solution</a>
+      </nav>
+
+      <section class="page-hero channel-hero">
+        <p class="eyebrow"><span></span> Working post-quantum secure channel</p>
+        <h1>Send data. Transmit only<br /><em>ciphertext.</em></h1>
+        <p class="hero-copy">This is the product flow QuantumShield is working toward: a sender encrypts a message to a recipient’s post-quantum public key; the recipient decrypts it locally with their private key.</p>
+      </section>
+
+      <section class="channel-app" aria-labelledby="channel-title">
+        <div class="channel-app-head">
+          <div>
+            <p class="step-label">LIVE END-TO-END DEMO</p>
+            <h2 id="channel-title">Alice → public channel → Bob</h2>
+          </div>
+          <span class="real-tag">ML-KEM-768 + AES-256-GCM</span>
+        </div>
+
+        <div class="channel-setup">
+          <div>
+            <p class="setup-label">Step 1 · Recipient setup</p>
+            <h3>Bob creates a post-quantum key pair</h3>
+            <p>Bob’s public key can be shared. His private key never leaves this device.</p>
+          </div>
+          <button id="createBobKeys" type="button">Create Bob’s secure session <span>→</span></button>
+        </div>
+        <p class="channel-session" id="channelSession">No session yet. Create Bob’s key pair to begin.</p>
+
+        <div class="message-grid">
+          <article class="channel-person alice-panel" id="alicePanel">
+            <div class="channel-person-head"><span class="party-avatar">A</span><div><p>Alice · sender</p><h3>Compose a private message</h3></div></div>
+            <label for="channelMessage">Message for Bob</label>
+            <textarea id="channelMessage" maxlength="300">Project Delta budget: ₹2,50,000</textarea>
+            <button id="sendSecureMessage" type="button" disabled>Encrypt & send to Bob <span>→</span></button>
+            <p class="person-status" id="aliceStatus">Waiting for Bob’s public key.</p>
+          </article>
+
+          <section class="transit-panel" id="transitPanel" aria-label="Public channel packet">
+            <div class="channel-heading"><span>PUBLIC CHANNEL</span><small>Can be relayed by a server</small></div>
+            <div class="transit-icon">⌁</div>
+            <h3>Encrypted packet in transit</h3>
+            <p>The relay sees ciphertext only. It never receives Bob’s private key or the AES session key.</p>
+            <div class="packet-summary" id="packetSummary">No packet transmitted yet.</div>
+          </section>
+
+          <article class="channel-person bob-panel" id="bobPanel">
+            <div class="channel-person-head"><span class="party-avatar bob-avatar">B</span><div><p>Bob · recipient</p><h3>Encrypted inbox</h3></div></div>
+            <div class="inbox-item" id="inboxItem"><span>◌</span><p>No encrypted message received.</p></div>
+            <button id="decryptSecureMessage" type="button" disabled>Decrypt latest message <span>→</span></button>
+            <p class="person-status" id="bobStatus">Bob’s private key stays local.</p>
+            <div class="received-message" id="receivedMessage" hidden><p>BOB READS</p><strong id="receivedText"></strong></div>
+          </article>
+        </div>
+
+        <div class="packet-inspection" id="packetInspection" hidden>
+          <div><p class="result-label">ACTUAL PACKET READY FOR TRANSPORT</p><p>These fields could be sent through HTTPS, WebSocket, email, or a relay server. None contains Bob’s private key.</p></div>
+          <pre id="packetJson"></pre>
+        </div>
+
+        <div class="channel-result" id="channelResult" hidden><span>✓</span><div><strong>End-to-end encryption completed</strong><p id="channelResultText"></p></div></div>
+      </section>
+
+      <section class="solution-proof">
+        <p class="step-label">HOW THIS SOLVES THE PROBLEM</p>
+        <h2>Replace the vulnerable key-establishment layer.</h2>
+        <div class="proof-grid">
+          <article><span>01</span><h3>Before</h3><p>Many systems use RSA/ECC to establish or protect a symmetric encryption key. A future large quantum computer threatens that public-key layer.</p></article>
+          <article><span>02</span><h3>QuantumShield channel</h3><p>ML-KEM establishes the AES session key without relying on RSA factoring or ECC discrete-log assumptions.</p></article>
+          <article><span>03</span><h3>What scales</h3><p>A relay server can carry encrypted packets without accessing plaintext. Organisations can migrate application by application.</p></article>
+        </div>
+      </section>
+
+      <aside class="production-boundary"><span class="note-icon">i</span><p><strong>Production boundary:</strong> this page performs genuine client-side ML-KEM and AES operations, but its transport is shown locally for clarity. A deployable product needs authenticated user identities, protected device key storage, a ciphertext-only relay, standardised hybrid protocols, key rotation, and independent security review.</p></aside>
+
+      <section class="final-cta"><p class="step-label">NEXT VIEW</p><h2>Apply this secure channel to protected defence communications.</h2><a class="threat-button" href="defence.html">Open DefenceGuard command-link lab <span>→</span></a></section>
+    </main>
+    <footer><span>QuantumShield</span><span>Local cryptographic demo · Encrypted transport architecture</span></footer>
+    <script src="vendor/ml-kem.classic.js"></script>
+    <script src="channel.js"></script>
+  </body>
+</html>

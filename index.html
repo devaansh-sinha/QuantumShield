@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="An interactive visual showing AES-256-GCM encryption in the browser." />
+    <title>QuantumShield | Encryption Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="brand" href="#top" aria-label="QuantumShield home">
+          <span class="brand-mark">Q</span>
+          <span>Quantum<span>Shield</span></span>
+        </a>
+        <a class="nav-link" href="#visualizer">Encryption visualizer</a>
+      </nav>
+
+      <section class="hero" id="top">
+        <p class="eyebrow"><span></span> Interactive learning experience</p>
+        <h1>How does normal<br /><em>encryption</em> protect a message?</h1>
+        <p class="hero-copy">Watch a readable message become unreadable ciphertext, then return safely to its original form when the correct secret key is used.</p>
+        <a class="start-link" href="#visualizer">Try the visualizer <span>↓</span></a>
+      </section>
+
+      <section class="visualizer" id="visualizer" aria-labelledby="visualizer-title">
+        <div class="section-heading">
+          <p class="step-label">STEP 01</p>
+          <h2 id="visualizer-title">Transform a message</h2>
+          <p>Enter any short message, then follow it through the encryption journey.</p>
+        </div>
+
+        <div class="input-card">
+          <label for="messageInput">Your private message</label>
+          <div class="input-row">
+            <input id="messageInput" type="text" maxlength="80" value="Meet at 5 PM" autocomplete="off" />
+            <button id="encryptButton" type="button">Encrypt message <span>→</span></button>
+          </div>
+          <p class="input-help">Tip: use a short message with letters, numbers, or symbols.</p>
+        </div>
+
+        <div class="journey" aria-live="polite">
+          <article class="journey-card plaintext-card" id="plaintextCard">
+            <div class="card-label"><span class="number">01</span> Plaintext</div>
+            <p class="value" id="plaintextOutput">Meet at 5 PM</p>
+            <p class="description">The human-readable message.</p>
+          </article>
+
+          <div class="connector" aria-hidden="true">
+            <span class="connector-line"></span>
+            <span class="connector-arrow">→</span>
+          </div>
+
+          <article class="journey-card key-card" id="keyCard">
+            <div class="card-label"><span class="number">02</span> Secret key</div>
+            <div class="key-visual"><span class="key-icon">✦</span><span>AES-256-GCM key</span></div>
+            <p class="description">A fresh random key is generated inside this browser.</p>
+          </article>
+
+          <div class="connector" aria-hidden="true">
+            <span class="connector-line"></span>
+            <span class="connector-arrow">→</span>
+          </div>
+
+          <article class="journey-card ciphertext-card" id="ciphertextCard">
+            <div class="card-label"><span class="number">03</span> Ciphertext</div>
+            <p class="value cipher-value" id="ciphertextOutput">••••••••••••••••</p>
+            <p class="description">Unreadable data for anyone without the key.</p>
+          </article>
+        </div>
+
+        <div class="attacker-row" id="attackerRow">
+          <div class="attacker-icon">?</div>
+          <div>
+            <p class="attacker-title">An attacker intercepts only ciphertext</p>
+            <p class="attacker-copy" id="attackerCopy">Without the AES-256 key, this intercepted ciphertext cannot be read.</p>
+          </div>
+          <span class="blocked">KEY MISSING</span>
+        </div>
+
+        <div class="decrypt-panel" id="decryptPanel">
+          <div>
+            <p class="step-label">STEP 02</p>
+            <h3>Receiver uses the correct key</h3>
+            <p>The same shared key reverses the transformation and reveals the original message.</p>
+          </div>
+          <button id="decryptButton" type="button" disabled>Decrypt with correct key <span>→</span></button>
+        </div>
+
+        <div class="result-card" id="resultCard" hidden>
+          <span class="success-dot">✓</span>
+          <div>
+            <p class="result-label">Message restored</p>
+            <p class="result-message" id="decryptedOutput"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="explainers" aria-label="Encryption terminology">
+        <article>
+          <p class="term-number">01</p>
+          <h3>Plaintext</h3>
+          <p>Information that people can read, such as a message, record, or password.</p>
+        </article>
+        <article>
+          <p class="term-number">02</p>
+          <h3>Secret key</h3>
+          <p>A protected value that lets authorised people encrypt and decrypt information.</p>
+        </article>
+        <article>
+          <p class="term-number">03</p>
+          <h3>Ciphertext</h3>
+          <p>Scrambled information that should be useless to somebody without the right key.</p>
+        </article>
+      </section>
+
+      <aside class="learning-note">
+        <span class="note-icon">i</span>
+        <p><strong>Real encryption demo:</strong> this page uses the browser’s built-in AES-256-GCM implementation and a fresh random key for every message. It is still a local demonstration: the key remains only in this browser tab, so it is not a complete secure messaging app.</p>
+      </aside>
+
+      <section class="next-section">
+        <p class="step-label">NEXT IN QUANTUMSHIELD</p>
+        <h2>What happens when a future quantum computer targets today’s key exchange?</h2>
+        <p>Next, we will show a safe, tiny RSA example and explain the quantum threat without claiming to break real-world encryption.</p>
+        <a class="threat-button" href="threat.html">Open quantum threat demo <span>→</span></a>
+      </section>
+    </main>
+
+    <footer>
+      <span>QuantumShield</span>
+      <span>Built for learning · Hackathon prototype</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

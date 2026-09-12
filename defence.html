@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="DefenceGuard: a fictional working post-quantum secure command-link prototype." />
+    <title>DefenceGuard | QuantumShield</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="vendor/ml-kem.classic.js"></script>
+    <script src="defence.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="brand" href="index.html" aria-label="QuantumShield home"><span class="brand-mark">Q</span><span>Quantum<span>Shield</span></span></a>
+        <a class="nav-link" href="solution.html">← Quantum-safe solution</a>
+      </nav>
+
+      <section class="def-hero">
+        <p class="eyebrow"><span></span> DEFENCEGUARD · INDIA-CONTEXT FICTIONAL SECURITY LAB</p>
+        <h1>Protect the command.<br />Prove the <em>source.</em></h1>
+        <p>This local working lab demonstrates how a future-ready command link can protect a message and an attachment against interception, modification, replay, and an unauthorised sender. It uses fictional labels and contains no real operational information.</p>
+        <div class="def-hero-notes"><span>FICTIONAL DEMO DATA ONLY</span><span>ML-KEM-768 + AES-256-GCM</span><span>LOCAL BROWSER CRYPTO</span></div>
+      </section>
+
+      <section class="def-app" aria-labelledby="def-title">
+        <div class="def-app-head">
+          <div>
+            <p class="step-label">WORKING QUANTUM-SAFE COMMAND LINK</p>
+            <h2 id="def-title">Command centre → public network → authorised field unit</h2>
+            <p>A command centre encrypts a message and optional attachment to a field unit’s ML-KEM public key. The recipient alone can recover the AES session key. A signed package, expiry time, and packet ID make the security checks visible.</p>
+          </div>
+          <span class="def-tag">FICTIONAL DEFENCE COMMUNICATION</span>
+        </div>
+
+        <div class="def-flow" aria-label="DefenceGuard workflow">
+          <article id="defKeyCard"><span>01</span><div><strong>Field unit creates ML-KEM keys</strong><p>Only the public key is shared; the private recovery key stays with the field unit.</p></div></article>
+          <div class="def-arrow">→</div>
+          <article id="defSealCard"><span>02</span><div><strong>Command centre seals packet</strong><p>A new ML-KEM secret and AES-GCM key protect each message or attachment.</p></div></article>
+          <div class="def-arrow">→</div>
+          <article id="defTransitCard"><span>03</span><div><strong>Public network carries ciphertext</strong><p>A relay can see package metadata but not message or file contents.</p></div></article>
+          <div class="def-arrow">→</div>
+          <article id="defOpenCard"><span>04</span><div><strong>Field unit verifies &amp; opens</strong><p>The receiver checks sender trust, expiry, replay state, and integrity before reading.</p></div></article>
+        </div>
+
+        <div class="def-workbench">
+          <article class="def-card def-setup-card">
+            <p class="def-card-label">01 · FIELD UNIT SETUP</p>
+            <h3>Create a recipient key set</h3>
+            <p class="def-card-copy">The field unit owns this key pair. Give the public <code>.dpk</code> file to the command centre; keep the private <code>.dsk</code> file private.</p>
+            <label for="defRecipientName">Field-unit label</label>
+            <input id="defRecipientName" type="text" maxlength="48" value="Field Unit Echo" autocomplete="off" />
+            <button id="defCreateKeysButton" type="button">Create field-unit keys <span>→</span></button>
+            <p class="def-status" id="defKeyStatus">No key set yet.</p>
+            <div class="def-download-row" id="defKeyDownloads" hidden>
+              <button id="defDownloadPublicKeyButton" type="button">Download public key (.dpk)</button>
+              <button id="defDownloadPrivateKeyButton" type="button">Download private key (.dsk)</button>
+            </div>
+          </article>
+
+          <article class="def-card def-compose-card">
+            <p class="def-card-label">02 · COMMAND CENTRE</p>
+            <h3>Seal a message or attachment</h3>
+            <p class="def-card-copy">Use the field unit’s public key. You can create a message, attach a file, or do both. Content is encrypted locally before the package is downloaded.</p>
+            <label for="defRecipientPublicKeyInput">Field-unit public key (.dpk)</label>
+            <input id="defRecipientPublicKeyInput" type="file" accept=".dpk,application/json" />
+            <p class="def-status" id="defPublicKeyStatus">Create local keys above or upload a field unit’s public key.</p>
+            <label for="defMessage">Fictional mission/update message</label>
+            <textarea id="defMessage" maxlength="1800" placeholder="Example: Exercise Aakash status report. This is fictional demo text only.">Exercise Aakash update: secure link test packet. Fictional data only.</textarea>
+            <label for="defAttachment">Optional attachment (up to 10 MB)</label>
+            <input id="defAttachment" type="file" />
+            <p class="def-status" id="defAttachmentStatus">No attachment selected.</p>
+            <button id="defSealButton" type="button" disabled>Seal quantum-safe packet <span>→</span></button>
+          </article>
+
+          <article class="def-card def-receiver-card">
+            <p class="def-card-label">03 · AUTHORISED FIELD UNIT</p>
+            <h3>Verify and open a received packet</h3>
+            <p class="def-card-copy">The receiver needs the encrypted <code>.dguard</code> package, matching private recovery key, and trusted command-centre public key.</p>
+            <label for="defPacketInput">Encrypted packet (.dguard)</label>
+            <input id="defPacketInput" type="file" accept=".dguard,application/json" />
+            <label for="defRecoveryKeyInput">Private recovery key (.dsk)</label>
+            <input id="defRecoveryKeyInput" type="file" accept=".dsk,application/json" />
+            <label for="defTrustKeyInput">Trusted command key (.dtrust)</label>
+            <input id="defTrustKeyInput" type="file" accept=".dtrust,application/json" />
+            <button id="defOpenUploadButton" type="button" disabled>Verify &amp; open uploaded packet <span>→</span></button>
+            <button id="defOpenLatestButton" class="def-secondary-button" type="button" disabled>Open latest local demo packet <span>→</span></button>
+            <p class="def-status" id="defReceiverStatus">No packet is ready for verification.</p>
+          </article>
+        </div>
+
+        <section class="def-package" id="defPackagePanel" hidden aria-labelledby="def-package-title">
+          <div>
+            <p class="result-label">PROTECTED PACKAGE READY</p>
+            <h3 id="def-package-title">What crosses the public network</h3>
+            <p>The transferable package carries an encapsulated ML-KEM secret, a public AES-GCM IV, authenticated ciphertext, packet metadata, and a command-origin signature. It never includes the field unit’s private key or the AES plaintext key.</p>
+          </div>
+          <dl>
+            <div><dt>Packet ID</dt><dd id="defPacketId">—</dd></div>
+            <div><dt>ML-KEM ciphertext</dt><dd id="defKemSize">—</dd></div>
+            <div><dt>AES-GCM payload</dt><dd id="defCipherSize">—</dd></div>
+            <div><dt>Expiry / replay control</dt><dd id="defExpiry">—</dd></div>
+          </dl>
+          <div class="def-package-downloads">
+            <button id="defDownloadPacketButton" type="button">Download protected packet (.dguard)</button>
+            <button id="defDownloadTrustButton" type="button">Download command trust key (.dtrust)</button>
+          </div>
+        </section>
+
+        <section class="def-transit" id="defTransitPanel" hidden aria-labelledby="def-transit-title">
+          <div class="def-panel-head"><div><p class="result-label">PUBLIC NETWORK VIEW</p><h3 id="def-transit-title">The relay receives ciphertext, not the command.</h3><p>This is what an intercepted package reveals. It is useful to transport the packet, but it cannot be used to recover the message or attachment.</p></div><span>ATTACKER-VISIBLE METADATA</span></div>
+          <pre id="defTransportPreview"></pre>
+        </section>
+
+        <section class="def-result" id="defResultPanel" hidden aria-live="polite">
+          <div><span>✓</span><div><strong id="defResultHeading">Field unit accepted the packet</strong><p id="defResultText"></p></div></div>
+          <div class="def-recovered" id="defRecoveredAttachment" hidden><p>RECOVERED ATTACHMENT</p><strong id="defRecoveredFileName"></strong><button id="defDownloadRecoveredButton" type="button">Download original attachment</button></div>
+        </section>
+
+        <section class="def-attack-lab" id="defAttackLab" hidden aria-labelledby="def-attack-title">
+          <div class="def-panel-head"><div><p class="result-label">ACTIVE SECURITY TESTS</p><h3 id="def-attack-title">Show exactly what an attacker cannot do.</h3><p>These local tests do not target any real system. They inspect or modify only the package created in this browser.</p></div><span>SAFE SIMULATION</span></div>
+          <div class="def-attack-actions">
+            <button id="defInterceptButton" type="button">Test interception</button>
+            <button id="defTamperButton" type="button">Test one-byte tamper</button>
+            <button id="defReplayButton" type="button">Test replay attack</button>
+            <button id="defImpersonationButton" type="button">Test unauthorised sender</button>
+          </div>
+          <div class="def-attack-output" id="defAttackOutput">Seal a packet to enable the security tests.</div>
+        </section>
+
+        <section class="def-trace" aria-labelledby="def-trace-title">
+          <div class="def-panel-head"><div><p class="result-label">BEHIND THE SCENES</p><h3 id="def-trace-title">What is actually happening</h3></div><span>REAL BROWSER CRYPTO</span></div>
+          <div class="def-trace-grid">
+            <article id="defTraceKey"><p>01 · KEY SETUP</p><strong>Field unit creates ML-KEM key pair</strong><code>Waiting for recipient setup</code></article>
+            <article id="defTraceKem"><p>02 · ENCAPSULATION</p><strong>Command creates one-time secret</strong><code>Waiting for public key</code></article>
+            <article id="defTraceAes"><p>03 · DATA PROTECTION</p><strong>AES-256-GCM encrypts payload</strong><code>Waiting for message or file</code></article>
+            <article id="defTraceOrigin"><p>04 · ORIGIN CHECK</p><strong>Trusted command signature verifies</strong><code>Waiting for package</code></article>
+            <article id="defTraceDefence"><p>05 · RECEIVER POLICY</p><strong>Reject altered, replayed, or unknown packets</strong><code>Waiting for security test</code></article>
+          </div>
+        </section>
+
+        <section class="def-console" aria-live="polite"><div><span></span> DEFENCEGUARD SECURITY CONSOLE</div><p id="defConsole">Ready. The field unit can create its ML-KEM-768 key pair when you begin.</p></section>
+        <aside class="def-accuracy"><span class="note-icon">i</span><p><strong>Technical boundary:</strong> ML-KEM-768 and AES-256-GCM are genuinely executed locally in this browser. The origin signature in this learning prototype uses browser ECDSA P-256 so the signature flow is real and inspectable; ECDSA is not post-quantum secure. A production defence deployment should use a standardised hybrid authentication design and migrate the signature layer to ML-DSA, with hardware-backed keys, audited identities, secure transport, key rotation, and independent review.</p></aside>
+      </section>
+
+      <section class="def-why">
+        <p class="step-label">WHY THIS SHOWS THE QUANTUM PROBLEM</p>
+        <h2>Defence communication needs more than encryption.</h2>
+        <div>
+          <article><span>CONFIDENTIALITY</span><h3>Quantum-resistant key establishment</h3><p>ML-KEM replaces the RSA/ECC-style exchange that a future quantum computer could target with Shor’s algorithm.</p></article>
+          <article><span>INTEGRITY</span><h3>Any modification is rejected</h3><p>The signed packet and AES-GCM authentication make changed ciphertext fail verification before it can be trusted.</p></article>
+          <article><span>FRESHNESS</span><h3>Old instructions cannot be replayed</h3><p>A unique packet ID, expiry time, and receiver-side replay registry stop a valid old packet from being accepted twice.</p></article>
+        </div>
+      </section>
+
+      <section class="final-cta"><p class="step-label">QUANTUMSHIELD</p><h2>Protect the data. Verify the source. Reject the replay.</h2><a class="threat-button" href="solution.html">Return to the hybrid encryption solution <span>→</span></a></section>
+    </main>
+    <footer><span>Quantum<span>Shield</span></span><span>Fictional DefenceGuard lab · No real operational data</span></footer>
+  </body>
+</html>

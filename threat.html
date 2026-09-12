@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A tiny, educational Shor's algorithm simulation showing the future quantum threat to RSA key exchange." />
+    <title>QuantumShield | Quantum Threat Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="brand" href="index.html" aria-label="QuantumShield home">
+          <span class="brand-mark">Q</span>
+          <span>Quantum<span>Shield</span></span>
+        </a>
+        <a class="nav-link" href="index.html#visualizer">← Normal encryption</a>
+      </nav>
+
+      <section class="page-hero">
+        <p class="eyebrow"><span></span> Phase 02 · Quantum threat</p>
+        <h1>When the <em>key exchange</em><br />becomes the weak point.</h1>
+        <p class="hero-copy">AES protects the message. But systems must first establish the AES key. Today, RSA and ECC often help with that job—and a future fault-tolerant quantum computer could threaten them.</p>
+      </section>
+
+      <section class="threat-flow" aria-label="The key exchange problem">
+        <article>
+          <span class="flow-number">01</span>
+          <h2>Protect data</h2>
+          <p>Alice encrypts a message with a fast symmetric algorithm such as AES.</p>
+        </article>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <article>
+          <span class="flow-number">02</span>
+          <h2>Establish a key</h2>
+          <p>RSA/ECC help Alice and Bob agree on or protect the secret key.</p>
+        </article>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <article class="threat-flow-danger">
+          <span class="flow-number">03</span>
+          <h2>Future risk</h2>
+          <p>Shor’s algorithm could break the mathematical assumption behind RSA/ECC.</p>
+        </article>
+      </section>
+
+      <section class="simulator" id="simulator" aria-labelledby="simulator-title">
+        <div class="simulator-head">
+          <div>
+            <p class="step-label">EDUCATIONAL SIMULATION</p>
+            <h2 id="simulator-title">Factor a tiny RSA number</h2>
+          </div>
+          <span class="toy-tag">TOY EXAMPLE · N &lt; 10,000</span>
+        </div>
+
+        <p class="simulator-intro">RSA publishes a number made from exactly two secret prime numbers. Enter a small toy RSA number such as <code>15 = 3 × 5</code>, <code>21 = 3 × 7</code>, or <code>9797 = 97 × 101</code>. Real RSA uses numbers hundreds of digits long.</p>
+
+        <div class="number-input-panel">
+          <div>
+            <label for="rsaNumber">Choose a toy RSA modulus (N = p × q)</label>
+            <p>Use two different odd prime factors; N must be from 15 to 9,999.</p>
+          </div>
+          <div class="number-entry">
+            <span>N =</span>
+            <input id="rsaNumber" type="number" min="15" max="9999" step="2" value="9797" inputmode="numeric" />
+          </div>
+        </div>
+        <p class="input-error" id="inputError" role="alert"></p>
+
+        <div class="rsa-display">
+          <div><span>Public RSA number</span><strong id="publicNumber">N = 9797</strong></div>
+          <div class="rsa-lock">🔒</div>
+          <div><span>Hidden factors</span><strong id="factorDisplay">? × ?</strong></div>
+        </div>
+
+        <div class="simulation-controls">
+          <button class="classical-button" id="classicalButton" type="button">1. Try classical factoring</button>
+          <button id="shorButton" type="button">2. Run Shor concept simulation <span>→</span></button>
+        </div>
+
+        <div class="simulation-console" aria-live="polite">
+          <div class="console-top"><span class="console-dot"></span><span>QUANTUMSHIELD CONSOLE</span></div>
+          <div class="console-body" id="consoleOutput">Choose a demonstration above. The result will appear here.</div>
+        </div>
+
+        <aside class="accuracy-note">
+          <span class="note-icon">i</span>
+          <p><strong>What this proves:</strong> the mathematical steps of a tiny Shor example. The quantum period-finding step is simulated; this webpage is not claiming to run a quantum computer or break real RSA.</p>
+        </aside>
+      </section>
+
+      <section class="risk-section">
+        <p class="step-label">WHY THIS MATTERS</p>
+        <h2>The danger is not “quantum reads every ciphertext.”</h2>
+        <p>It is that an attacker could use Shor’s algorithm to undermine RSA/ECC key exchange or digital signatures, and thereby obtain keys or impersonate trusted systems. AES-256 remains a strong choice for message encryption.</p>
+        <div class="risk-cards">
+          <article><span>01</span><h3>Record traffic today</h3><p>Sensitive encrypted data can be collected while it is still unreadable.</p></article>
+          <article><span>02</span><h3>Break the key layer later</h3><p>A sufficiently capable quantum computer could target vulnerable public-key cryptography.</p></article>
+          <article><span>03</span><h3>Protect long-life data now</h3><p>Health, financial, government, and research records may need confidentiality for decades.</p></article>
+        </div>
+      </section>
+
+      <section class="solution-cta">
+        <p class="step-label">PHASE 03 · THE RESPONSE</p>
+        <h2>So what should organisations do?</h2>
+        <p>Move toward post-quantum cryptography, use hybrid migration where appropriate, and reserve QKD hardware for dedicated high-security links.</p>
+        <a class="threat-button" href="solution.html">See the quantum-safe solution <span>→</span></a>
+      </section>
+    </main>
+    <footer><span>QuantumShield</span><span>Educational simulation · Not a real quantum attack</span></footer>
+    <script src="threat.js"></script>
+  </body>
+</html>
